@@ -13,7 +13,10 @@ import ollama
 
 # ── config ───────────────────────────────────────────────────────────────────
 MODEL        = "moondream"   # change to "moondream2" if needed
-PROMPT       = "Describe what you see in this image in detail."
+PROMPT       = (
+    "Describe only what is clearly visible in this image. "
+    "Focus on people and objects close to them, and ignore small details. "
+)
 FONT         = cv2.FONT_HERSHEY_SIMPLEX
 
 # camera window
@@ -39,6 +42,7 @@ def describe_image(frame_jpg_bytes: bytes) -> str:
     response = ollama.chat(
         model=MODEL,
         messages=[{"role": "user", "content": PROMPT, "images": [b64]}],
+        options={"temperature": 0.4},
     )
     return response["message"]["content"].strip()
 
