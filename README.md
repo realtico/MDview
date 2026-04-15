@@ -1,48 +1,87 @@
-# MDview — Moondream Live Camera Demo
+# MDview — Moondream Vision Demos
 
-A minimal Python demo that uses your webcam and a local [Moondream](https://github.com/vikhyat/moondream) vision model (via [Ollama](https://ollama.com)) to describe what the camera sees — entirely offline, no API key required.
+A collection of local computer vision demos built around [Moondream](https://github.com/vikhyat/moondream) (via [Ollama](https://ollama.com)) and OpenCV. Everything runs offline — no API key, no cloud.
 
-## Controls
+This repository is also the prototyping ground for a larger **mmWave-triggered interaction agent** (see Roadmap below).
+
+---
+
+## Scripts
+
+### `demo.py` — Scene description
+
+Captures a webcam frame and asks Moondream to describe what it sees.
+
+**Controls**
 
 | Key | Action |
 |-----|--------|
 | `SPACE` | Capture the current frame and request a description |
 | `ESC` | Quit |
 
-## Requirements
+**Requirements**
 
 - Python 3.10+
 - [Ollama](https://ollama.com) installed and running
-- Moondream model pulled in Ollama
-
-## Setup
-
-### 1. Pull the model
-
-```bash
-ollama pull moondream
-```
+- Moondream model pulled: `ollama pull moondream`
 
 > If your local model is listed as `moondream2` in `ollama list`, open `demo.py` and change `MODEL = "moondream"` to `MODEL = "moondream2"`.
 
-### 2. Install Python dependencies
-
 ```bash
 pip install -r requirements.txt
-```
-
-### 3. Run
-
-```bash
 python demo.py
 ```
 
 Two windows open side by side:
 
 - **MDview -- Camera**: live camera feed with a status bar at the top
-- **MDview -- Description**: dedicated text window that shows the model's description in a larger, readable font
+- **MDview -- Description**: dedicated text window with the model's response in a larger font
 
-Press `SPACE` to capture the current frame. The description appears in the second window once the model responds. Press `SPACE` again to capture a new frame.
+---
+
+### `facefind.py` — Face detection
+
+Detects faces in a captured frame using OpenCV's built-in Haar Cascade classifier. No Ollama or extra models required.
+
+**Controls**
+
+| Key | Action |
+|-----|--------|
+| `SPACE` | Capture frame and detect faces |
+| `ESC` | Quit |
+
+```bash
+python facefind.py   # same requirements.txt, no extra dependencies
+```
+
+Detected faces are shown with green bounding boxes and index labels (`#1`, `#2`, …) in a second **Detections** window. Detection sensitivity can be tuned via `SCALE_FACTOR`, `MIN_NEIGHBORS`, and `MIN_FACE_PX` at the top of the file.
+
+---
+
+## Roadmap — mmWave Interaction Agent
+
+The end goal is a privacy-first, fully local interaction agent triggered by a millimeter-wave radar sensor:
+
+```
+mmWave radar (UART)
+       |
+  agent_pi.py  (Raspberry Pi Zero 2W)
+  |- capture frame (picamera2)
+  |- face detection (Haar / lightweight model)
+  `- POST frame to server
+                              agent_server.py  (local network host)
+                              |- Moondream  -> scene description
+                              `- Gemma      -> contextual greeting
+       <--- { scene, greeting } ---
+  |- Piper TTS  -> speaks greeting
+  `- Vosk STT   -> listens, loops back to /chat
+```
+
+The architecture uses independent microservices communicating over IP sockets so each component can run on any machine on the local network and be promoted or demoted freely (e.g. move TTS/STT to the Pi, keep vision models on the host). No cloud services involved at any stage.
+
+**Status:** hardware preparation in progress (Pi Zero 2W + mmWave sensor). Implementation will start once the physical layer is ready.
+
+---
 
 ## Compatibility
 
