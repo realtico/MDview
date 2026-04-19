@@ -26,7 +26,7 @@ from piper.download_voices import download_voice
 #)
 
 # --- minicpm-v (alternative) ---
-MODEL        = "gemma4:e2b"
+MODEL        = "gemma3:4b"
 PROMPT2       = (
     "Describe only what is clearly visible in this image. "
     "Focus on people and objects close to them, and ignore small details."
@@ -34,7 +34,7 @@ PROMPT2       = (
 
 PROMPT      = (
     "Describe the main person and the nearby objects only."
-    "Ignore small details and anything far away. Responda em português brasileiro."
+    "Ignore small details and anything far away. Responda em português brasileiro em paragrafo de texto, sem caracteres especiais pois será lido por tts."
 )
 
 # --- moondream (alternative) ---
@@ -61,7 +61,8 @@ DESC_PADDING = 20
 WRAP_CHARS   = 62            # characters per line in the description window
 
 # piper TTS
-VOICE_NAME   = "en_GB-jenny_dioco-medium"
+VOICE_NAME   = "pt_BR-faber-medium"
+# VOICE_NAME   = "en_GB-jenny_dioco-medium"
 VOICES_DIR   = Path.home() / ".local" / "share" / "piper" / "voices"
 # ──────────────────────────────────────────────────────────────────────────────
 
