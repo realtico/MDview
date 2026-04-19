@@ -1,2 +1,4 @@
 opencv-python
 ollama
+piper-tts
+sounddevice
