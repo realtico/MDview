@@ -375,12 +375,12 @@ def main():
             description_lines = []
             processing = True
 
-            def run_interact(jpg=jpg_i, desc=last_text):
+            def run_interact(jpg=jpg_i, desc=last_text, h=host):
                 nonlocal description_lines, status, processing
                 nonlocal elapsed_time, last_source, chat_history
                 try:
                     t0   = time.monotonic()
-                    text = interact_with_image(jpg, desc)
+                    text = interact_with_image(jpg, desc, host=h)
                     elapsed_time = time.monotonic() - t0
                     last_source  = "interacao"
                     # adiciona ao histórico para que R possa continuar
@@ -410,7 +410,7 @@ def main():
             status     = "Ouvindo...  (fale agora)"
             processing = True
 
-            def run_voice():
+            def run_voice(h=host):
                 nonlocal description_lines, status, processing
                 nonlocal elapsed_time, last_source, chat_history
                 try:
@@ -426,7 +426,7 @@ def main():
                     # 2. envia ao Ollama com histórico completo
                     chat_history.append({"role": "user", "content": spoken})
                     t0    = time.monotonic()
-                    reply = chat_reply(chat_history)
+                    reply = chat_reply(chat_history, host=h)
                     elapsed_time = time.monotonic() - t0
                     last_source  = "voz"
                     chat_history.append({"role": "assistant", "content": reply})
