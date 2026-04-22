@@ -34,7 +34,8 @@ PROMPT2       = (
 
 PROMPT      = (
     "Describe the main person and the nearby objects only."
-    "Ignore small details and anything far away. Responda em português brasileiro em paragrafo de texto, sem caracteres especiais pois será lido por tts."
+    "Ignore small details and anything far away."
+    "Responda em português brasileiro em paragrafo de texto, sem texto introdutorio para a resposta e sem caracteres especiais pois será lido por tts."
 )
 
 # --- moondream (alternative) ---
